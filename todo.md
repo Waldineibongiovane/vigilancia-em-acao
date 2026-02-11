@@ -1,0 +1,28 @@
+# Vigilância em Ação - TODO
+
+- [x] Schema do banco de dados (complaints, metrics, neighborhoods, bulletins, settings, audit)
+- [x] Tema visual institucional verde/branco com tipografia acessível
+- [x] Estrutura de navegação pública (top nav) e admin (sidebar)
+- [x] Backend: db helpers para denúncias, métricas, bairros, boletins
+- [x] Backend: routers tRPC públicos e protegidos
+- [x] Dashboard público com indicadores epidemiológicos e filtros por período
+- [x] Mapa interativo Google Maps com marcadores por bairro e nível de risco
+- [x] Formulário de denúncias com upload de foto S3, captcha e protocolo
+- [x] Página de boletins epidemiológicos gerados por IA
+- [x] Página de transparência pública (histórico denúncias, tempo médio, ações)
+- [x] Painel admin: gestão de denúncias (aprovar/rejeitar/arquivar)
+- [x] Painel admin: edição manual de dados epidemiológicos
+- [x] Painel admin: estatísticas detalhadas
+- [x] Painel admin: configurações (emails, limites semáforo)
+- [x] Módulo IA: geração automática de boletins com análise de tendências
+- [x] Notificação automática por email ao registrar denúncia
+- [x] Rate limiting no formulário de denúncias
+- [ ] Captcha no formulário de denúncias (placeholder - requer chave hCaptcha/reCAPTCHA)
+- [ ] Automação diária (cron job) para coleta de dados e geração de boletins
+- [x] Testes vitest para routers e funcionalidades críticas (21 testes passando)
+- [x] LGPD: dados pessoais ocultos no público, visíveis apenas no admin
+- [x] Seed de bairros de Votuporanga com coordenadas e dados de exemplo
+- [x] Classificação automática de denúncias por IA (prioridade + resumo)
+- [x] Upload de fotos para S3 com URLs públicas
+- [x] Consulta de protocolo de denúncia
+- [x] Auditoria de ações administrativas
