@@ -138,3 +138,19 @@ export const audit = mysqlTable("audit", {
 
 export type AuditEntry = typeof audit.$inferSelect;
 export type InsertAuditEntry = typeof audit.$inferInsert;
+
+// ── Admin Local (Autenticação Local de Administrador) ──
+export const adminLocal = mysqlTable("adminLocal", {
+  id: int("id").autoincrement().primaryKey(),
+  username: varchar("username", { length: 100 }).notNull().unique(),
+  passwordHash: varchar("passwordHash", { length: 255 }).notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
+  email: varchar("email", { length: 320 }),
+  active: boolean("active").default(true).notNull(),
+  lastLogin: timestamp("lastLogin"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type AdminLocal = typeof adminLocal.$inferSelect;
+export type InsertAdminLocal = typeof adminLocal.$inferInsert;

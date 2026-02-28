@@ -50,14 +50,12 @@ export default function PublicNav() {
 
         {/* Right side */}
         <div className="flex items-center gap-2">
-          {isAuthenticated && user?.role === "admin" && (
-            <Link href="/admin">
-              <Button variant="outline" size="sm" className="gap-1.5 hidden sm:flex">
-                <Shield className="h-4 w-4" />
-                Admin
-              </Button>
-            </Link>
-          )}
+          <Link href="/admin-login">
+            <Button variant="outline" size="sm" className="gap-1.5 hidden sm:flex">
+              <Shield className="h-4 w-4" />
+              Admin
+            </Button>
+          </Link>
 
           {/* Mobile menu */}
           <Sheet open={open} onOpenChange={setOpen}>
@@ -82,14 +80,12 @@ export default function PublicNav() {
                     </Link>
                   );
                 })}
-                {isAuthenticated && user?.role === "admin" && (
-                  <Link href="/admin" onClick={() => setOpen(false)}>
-                    <Button variant="outline" className="w-full justify-start gap-2">
-                      <Shield className="h-4 w-4" />
-                      Painel Admin
-                    </Button>
-                  </Link>
-                )}
+                <Link href="/admin-login" onClick={() => setOpen(false)}>
+                  <Button variant="outline" className="w-full justify-start gap-2">
+                    <Shield className="h-4 w-4" />
+                    Login Admin
+                  </Button>
+                </Link>
               </nav>
             </SheetContent>
           </Sheet>

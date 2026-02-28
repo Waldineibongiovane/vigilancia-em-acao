@@ -10,6 +10,7 @@ import ComplaintPage from "./pages/ComplaintPage";
 import BulletinsPage from "./pages/BulletinsPage";
 import TransparencyPage from "./pages/TransparencyPage";
 import AdminPage from "./pages/AdminPage";
+import AdminLoginPage from "./pages/AdminLoginPage";
 
 function Router() {
   return (
@@ -19,6 +20,7 @@ function Router() {
       <Route path="/denunciar" component={ComplaintPage} />
       <Route path="/boletins" component={BulletinsPage} />
       <Route path="/transparencia" component={TransparencyPage} />
+      <Route path="/admin-login" component={AdminLoginPage} />
       <Route path="/admin" component={AdminPage} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />

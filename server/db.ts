@@ -8,6 +8,7 @@ import {
   bulletins, InsertBulletin,
   settings, InsertSetting,
   audit, InsertAuditEntry,
+  adminLocal, InsertAdminLocal, AdminLocal,
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
@@ -275,4 +276,31 @@ export async function listAuditEntries(opts: { limit?: number; offset?: number }
   const db = await getDb();
   if (!db) return [];
   return db.select().from(audit).orderBy(desc(audit.createdAt)).limit(opts.limit ?? 50).offset(opts.offset ?? 0);
+}
+
+// ── Admin Local ──
+export async function getAdminByUsername(username: string): Promise<AdminLocal | undefined> {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(adminLocal).where(eq(adminLocal.username, username)).limit(1);
+  return result[0];
+}
+
+export async function createAdminLocal(data: InsertAdminLocal): Promise<number> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const result = await db.insert(adminLocal).values(data);
+  return result[0].insertId;
+}
+
+export async function updateAdminLastLogin(id: number): Promise<void> {
+  const db = await getDb();
+  if (!db) return;
+  await db.update(adminLocal).set({ lastLogin: new Date() }).where(eq(adminLocal.id, id));
+}
+
+export async function getAllAdmins(): Promise<AdminLocal[]> {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(adminLocal).orderBy(asc(adminLocal.name));
 }

@@ -17,6 +17,7 @@
 - [x] Módulo IA: geração automática de boletins com análise de tendências
 - [x] Notificação automática por email ao registrar denúncia
 - [x] Rate limiting no formulário de denúncias
+- [x] Sistema de login local para administrador com credenciais padrão (admin/admin)
 - [ ] Captcha no formulário de denúncias (placeholder - requer chave hCaptcha/reCAPTCHA)
 - [ ] Automação diária (cron job) para coleta de dados e geração de boletins
 - [x] Testes vitest para routers e funcionalidades críticas (21 testes passando)
