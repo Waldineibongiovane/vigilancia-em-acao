@@ -5,43 +5,31 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Lock, AlertCircle, CheckCircle } from "lucide-react";
 import { useLocation } from "wouter";
+import { trpc } from "@/lib/trpc";
 
 export default function AdminLoginPage() {
   const [, setLocation] = useLocation();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
-
-    try {
-      const response = await fetch("/api/trpc/adminAuth.login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          input: { username, password },
-        }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error?.message || "Erro ao fazer login");
-      }
-
+  const loginMutation = trpc.adminAuth.login.useMutation({
+    onSuccess: () => {
       setSuccess(true);
       setTimeout(() => {
         setLocation("/admin");
       }, 1000);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Erro desconhecido");
-    } finally {
-      setLoading(false);
-    }
+    },
+    onError: (err) => {
+      setError(err.message || "Erro ao fazer login");
+    },
+  });
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    loginMutation.mutate({ username, password });
   };
 
   return (
@@ -84,7 +72,7 @@ export default function AdminLoginPage() {
                 placeholder="admin"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                disabled={loading || success}
+                disabled={loginMutation.isPending || success}
                 className="w-full"
               />
               <p className="text-xs text-gray-500 mt-1">Padrão: admin</p>
@@ -99,7 +87,7 @@ export default function AdminLoginPage() {
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                disabled={loading || success}
+                disabled={loginMutation.isPending || success}
                 className="w-full"
               />
               <p className="text-xs text-gray-500 mt-1">Padrão: admin</p>
@@ -107,10 +95,10 @@ export default function AdminLoginPage() {
 
             <Button
               type="submit"
-              disabled={loading || success || !username || !password}
+              disabled={loginMutation.isPending || success || !username || !password}
               className="w-full bg-green-600 hover:bg-green-700"
             >
-              {loading ? "Autenticando..." : "Acessar Painel"}
+              {loginMutation.isPending ? "Autenticando..." : "Acessar Painel"}
             </Button>
           </form>
 

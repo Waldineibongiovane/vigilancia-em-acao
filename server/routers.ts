@@ -512,6 +512,32 @@ IMPORTANTE: Use APENAS os dados fornecidos. NÃO invente números. Se não houve
   }),
 
   // ── Photo upload ──
+
+  // ── Admin Local Authentication ──
+  adminAuth: router({
+    login: publicProcedure
+      .input(z.object({ username: z.string(), password: z.string() }))
+      .mutation(async ({ input, ctx }) => {
+        const admin = await db.getAdminByUsername(input.username);
+        if (!admin || !admin.active) {
+          throw new Error("Credenciais invalidas");
+        }
+        if (!verifyPassword(input.password, admin.passwordHash)) {
+          throw new Error("Credenciais invalidas");
+        }
+        await db.updateAdminLastLogin(admin.id);
+        const cookieOptions = getSessionCookieOptions(ctx.req);
+        const adminToken = nanoid(32);
+        ctx.res.cookie("admin_token", adminToken, { ...cookieOptions, maxAge: 86400000 });
+        return { success: true, admin: { id: admin.id, name: admin.name, username: admin.username } };
+      }),
+    logout: publicProcedure.mutation(({ ctx }) => {
+      const cookieOptions = getSessionCookieOptions(ctx.req);
+      ctx.res.clearCookie("admin_token", { ...cookieOptions, maxAge: -1 });
+      return { success: true };
+    }),
+  }),
+
   upload: router({
     photo: publicProcedure
       .input(z.object({
